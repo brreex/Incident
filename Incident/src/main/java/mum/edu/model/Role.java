@@ -23,9 +23,8 @@ public class Role {
 		
 	}
 	
-	public Role(String role, List<User> users) {
+	public Role(String role) {
 		this.role = role;
-		this.users = users;
 	}
 
 	public int getId() {

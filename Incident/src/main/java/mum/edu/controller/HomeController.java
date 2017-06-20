@@ -1,18 +1,23 @@
 package mum.edu.controller;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class HomeController {
 	
-	@RequestMapping("/")
+	@GetMapping({"/","/home"})
 	public String home(){
-		return "hello";
+		return "home";
 	}
 	
-	@RequestMapping("/profile")
-	public String profile(){
-		return "profile";
+	@GetMapping("/login")
+	public String login(){
+		return "login";
+	}
+	
+	@GetMapping("/navigation")
+	public String navigationHeader(){
+		return "navigation";
 	}
 }

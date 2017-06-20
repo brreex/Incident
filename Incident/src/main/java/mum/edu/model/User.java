@@ -2,31 +2,28 @@ package mum.edu.model;
 
 import java.util.List;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.SecondaryTable;
 import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.Email;
 
 @Entity
-@SecondaryTable(name="UserInfo")
 public class User {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
 	
-	@NotNull @Column(table="UserInfo")
+	@NotNull 
 	private String firstname;
-	@NotNull @Column(table="UserInfo")
+	@NotNull 
 	private String lastname;
-	@NotNull @Column(table="UserInfo")
+	@NotNull
 	private String position;
-	@NotNull @Column(table="UserInfo")
+	@NotNull
 	private String phone;
 	
 	@NotNull @Email
@@ -34,17 +31,24 @@ public class User {
 	@NotNull
 	private String password;
 	@NotNull
+	private String confirmPassword;
+	@NotNull
 	private boolean enabled;
 	
 	@ManyToOne
 	private Departmet department;
 	@ManyToMany
-	private List<Role> roles;
+	private List<Role> roles ;
 	
 	public User(){
 		
 	}
-
+	public String getConfirmPassword() {
+		return confirmPassword;
+	}
+	public void setConfirmPassword(String confirmPassword) {
+		this.confirmPassword = confirmPassword;
+	}
 	public User(String firstname, String lastname, String position, String phone, String email, String password,
 			boolean enabled) {
 		this.firstname = firstname;
@@ -135,4 +139,12 @@ public class User {
 	public void setRoles(List<Role> roles) {
 		this.roles = roles;
 	}
+
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", firstname=" + firstname + ", lastname=" + lastname + ", position=" + position
+				+ ", phone=" + phone + ", email=" + email + ", password=" + password + ", confirmPassword="
+				+ confirmPassword + ", enabled=" + enabled + ", department=" + department + ", roles=" + roles + "]";
+	}
+	
 }

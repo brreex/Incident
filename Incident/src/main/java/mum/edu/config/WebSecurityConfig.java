@@ -19,19 +19,23 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
             .authorizeRequests()
-                //.antMatchers("/home", "/index","/ws/*/*","/ws/*","/signup").permitAll()
+                .antMatchers("/","/home","/login","/index").permitAll()
                 //.antMatchers("/products","/users","/addproduct","/product").hasAnyAuthority("ROLE_ADMIN")
                 //.antMatchers("/order","/profile").hasAnyAuthority("USER")
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
+                .loginPage("/login")
+                .passwordParameter("password")
+                .usernameParameter("username")
+                .defaultSuccessUrl("/home")
             	.permitAll()
             	.and()
             	.logout()
             	.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
             	.logoutSuccessUrl("/")
                 .permitAll();
-        
+         
         http.exceptionHandling().accessDeniedPage("/403");
         http.csrf().disable();
     }
@@ -40,13 +44,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth
             .inMemoryAuthentication()
-                .withUser("user").password("pass").roles("USER");
+                .withUser("user").password("pass").roles("ADMIN");
     }
     
-    /*@Autowired
+  /*  @Autowired
     public void configAuthentication(AuthenticationManagerBuilder auth) throws Exception {
         auth.jdbcAuthentication().dataSource(dataSource)
-                .usersByUsernameQuery("select username,password, enabled from users where username=?")
-                .authoritiesByUsernameQuery("select username, role from user_roles where username=?");
+                .usersByUsernameQuery("select email as username ,password, enabled from user where username=?")
+                .authoritiesByUsernameQuery("select u.email as username, r.role from user u join role r join user_roles ur where u.id = ur.users_id and r.id = ur.roles_id and  u.username =?");
     }*/
 }

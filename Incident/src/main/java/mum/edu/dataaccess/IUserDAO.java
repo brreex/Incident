@@ -7,5 +7,6 @@ import mum.edu.model.User;
 
 @Repository
 public interface IUserDAO extends JpaRepository<User, Integer>{
-	
+	User findByEmail(String email);
+	User getByFirstname(String firstName);
 }
