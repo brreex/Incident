@@ -12,4 +12,5 @@ public class SolutionController {
 	public String resolve(@PathVariable int id,Model model){
 		return "solution";
 	}
+	
 }

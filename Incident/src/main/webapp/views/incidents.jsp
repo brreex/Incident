@@ -41,7 +41,7 @@
 						<td>${incident.updatedDate}</td>
 						<td>${ incident.user.username}</td>
 						<td>
-						<form:form action='/incident/${incident.id}'method="delete">
+						<form:form action='/incident/${incident.id}'method="get">
 							<input type="submit" value="Resolve" />
 						</form:form>
 						</td>
