@@ -8,26 +8,26 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
-import javax.validation.constraints.NotNull;
+
 
 import org.hibernate.validator.constraints.Email;
 
 @Entity
-@Inheritance(strategy = InheritanceType.JOINED)
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class Employee {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.TABLE)
 	private int id;
-	@NotNull
+
 	private String firstname;
-	@NotNull
+
 	private String lastname;
-	@NotNull
+
 	private String position;
-	@NotNull
+
 	private String phone;
-	@NotNull
+
 	@Email
 	private String email;
 
@@ -35,8 +35,7 @@ public class Employee {
 	private String username;
 	@Transient
 	private String password;
-	@Transient
-	private User user;
+	
 	
 	@ManyToOne
 	private Department department;
@@ -54,15 +53,7 @@ public class Employee {
 		this.username = username;
 		this.password = password;
 	}
-
-	public User getUser() {
-		return user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
-	}
-
+	
 	public int getId() {
 		return id;
 	}
@@ -134,11 +125,4 @@ public class Employee {
 	public void setDepartment(Department department) {
 		this.department = department;
 	}
-
-	@Override
-	public String toString() {
-		return "Employee [id=" + id + ", firstname=" + firstname + ", lastname=" + lastname + ", position=" + position
-				+ ", phone=" + phone + ", email=" + email + ", department=" + department + "]";
-	}
-
 }

@@ -2,11 +2,14 @@ package mum.edu.model;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.validation.constraints.NotNull;
 
 @Entity
+@PrimaryKeyJoinColumn(name = "id", referencedColumnName = "id")
 public class User extends Employee {
 	@NotNull
 	private String username;
@@ -15,7 +18,7 @@ public class User extends Employee {
 	@NotNull
 	private Boolean enabled;
 	
-	@OneToMany(mappedBy="user")
+	@OneToMany(mappedBy="user",cascade=CascadeType.ALL)
 	private List<Role> roles;
 
 	public User() {
@@ -57,9 +60,10 @@ public class User extends Employee {
 		this.roles = roles;
 	}
 
-	@Override
-	public String toString() {
-		return "User [username=" + username + ", password=" + password + ", enabled=" + enabled
-				+ ", roles=" + roles + "]";
+	public Boolean getEnabled() {
+		return enabled;
+	}
+	public void setEnabled(Boolean enabled) {
+		this.enabled = enabled;
 	}
 }

@@ -2,9 +2,7 @@ package mum.edu.controller;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,14 +13,12 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-
-import mum.edu.dataaccess.IDepartmentDAO;
-import mum.edu.dataaccess.IRoleDAO;
 import mum.edu.model.Department;
 import mum.edu.model.Employee;
 import mum.edu.model.Role;
 import mum.edu.model.User;
 import mum.edu.service.IDepartmentService;
+import mum.edu.service.IEmployeeService;
 import mum.edu.service.IRoleService;
 import mum.edu.service.IUserService;
 
@@ -35,6 +31,9 @@ public class UserController {
 	IDepartmentService departmentService;
 	@Autowired
 	IRoleService roleService;
+	@Autowired
+	IEmployeeService employeeService;
+	
 	
 	@GetMapping("/users")
 	public String getAllUsers(){
@@ -57,30 +56,32 @@ public class UserController {
 	}
 	@PostMapping("/signup")
 	public String signupPost(@ModelAttribute("employee") Employee employee ,BindingResult bindingResult){
-		/*if(bindingResult.hasErrors()){
+		if(bindingResult.hasErrors()){
 			System.out.println(bindingResult.getAllErrors());
-			
 		}
-		user.setDepartment(new Department("IT", "224", "200"));
-		List<Role> roles = new ArrayList<Role>();
-		roles.add(new Role("USER"));
-		roles.add(new Role("ADMIN"));
-		user.setRoles(roles);*/
 		
 		Department department = departmentService.findByName(employee.getDepartment().getName());
 		employee.setDepartment(department);
+		Employee savedEmployee = employeeService.saveEmployee(employee);
 		
-		User user = new User(employee.getUsername(), employee.getPassword(), true);
+		String username = savedEmployee.getUsername();
+		String password = savedEmployee.getPassword();
+		
+		User user = new User();
+		user.setUsername(username);
+		user.setPassword(password);
+		user.setEnabled(true);
+		
+		user.setId(savedEmployee.getId());
+		System.out.println(user.getUsername());
+		System.out.println(user.getPassword());
+		System.out.println(user.getEnabled());
 		List<Role> roles = new ArrayList<>();
-		roles.add(new Role("USEER"));
+		roles.add(new Role("USER"));
 		
 		user.setRoles(roles);
+		user.setDepartment(department);
 		
-		System.out.println("username "+employee.getUsername());
-		System.out.println("password "+employee.getPassword());
-		System.out.println(employee);
-		
-		userService.saveUser(user);
 		userService.saveUser(user);
 		
 		return "redirect:/signup";

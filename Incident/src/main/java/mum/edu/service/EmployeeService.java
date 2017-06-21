@@ -1,10 +1,11 @@
 package mum.edu.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import mum.edu.dataaccess.IEmployeeDAO;
 import mum.edu.model.Employee;
-
+@Service
 public class EmployeeService implements IEmployeeService {
 
 	@Autowired

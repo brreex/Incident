@@ -1,54 +1,133 @@
 package mum.edu.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-
-import mum.edu.dataaccess.IDepartmentDAO;
-import mum.edu.dataaccess.IIncidentDAO;
-import mum.edu.dataaccess.IUserDAO;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import mum.edu.model.Department;
 import mum.edu.model.Incident;
 import mum.edu.model.User;
+import mum.edu.service.IDepartmentService;
+import mum.edu.service.IIncidentService;
+import mum.edu.service.IUserService;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-
 @Controller
 public class IncidentController {
-	
+
 	@Autowired
-	IUserDAO userDAO;
+	IUserService userService;
 	@Autowired
-	IIncidentDAO incidentDAO;
+	IIncidentService incidentService;
 	@Autowired
-	IDepartmentDAO departmentDAO;
-	
-	
+	IDepartmentService departmentService;
+
 	@GetMapping("/incidents")
-	public String allIncidnets(){
+	public String allIncidnets(Model model) {
+		Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
+		User currentUser = userService.findByUsername(loggedInUser.getName());
+
+		List<Incident> incidents = incidentService.findByDepartment(currentUser.getDepartment());
+		System.out.println("count:" + incidents.size());
+
+		for (Incident incident : incidents) {
+			System.out.println(incident);
+		}
+
+		model.addAttribute("incidents", incidents);
+
 		return "incidents";
 	}
-	
+
 	@GetMapping("/myincidents")
-	public String myIncidents(){
+	public String myIncidents(Model model) {
+		Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
+		User currentUser = userService.findByUsername(loggedInUser.getName());
+
+		List<Incident> incidents = incidentService.getUserIncidnets(currentUser);
+		System.out.println("count:" + incidents.size());
+
+		for (Incident incident : incidents) {
+			System.out.println(incident);
+		}
+
+		model.addAttribute("incidents", incidents);
 		return "myincidents";
 	}
-	
+
 	@GetMapping("/incident")
-	public String newIncidentGet(@ModelAttribute("incident") Incident incident,Model model){
+	public String newIncidentGet(@ModelAttribute("incident") Incident incident, Model model) {
+
+		List<String> priorityList = new ArrayList<>();
+		priorityList.add("--Select Priority--");
+		priorityList.add("Low");
+		priorityList.add("Mediuim");
+		priorityList.add("High");
+
+		List<String> dep = new ArrayList<>();
+		List<Department> departments = departmentService.findAll();
+
+		dep.add("--Select Department--");
+		for (Department department : departments) {
+			dep.add(department.getName());
+		}
+
+		List<String> categories = new ArrayList<>();
+		categories.add("--Select Category--");
+		categories.add("DataBase");
+		categories.add("Network");
+		categories.add("System");
+		categories.add("Developement");
+
+		model.addAttribute("incident", new Incident());
+		model.addAttribute("priorityList", priorityList);
+		model.addAttribute("categories", categories);
+		model.addAttribute("departments", dep);
+
+		return "newincident";
+	}
+
+	@PostMapping(value = "/incident")
+	public String newIncidentPost(@ModelAttribute Incident incident, BindingResult bindingResult) {
+		Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
+		User currentUser = userService.findByUsername(loggedInUser.getName());
+		
+		Department department = departmentService.findByName(incident.getDepartment().getName());
+
+		incident.setUser(currentUser);
+		incident.setStatus("New");
+		incident.setCreatedDate(new Date());
+		incident.setUpdatedDate(new Date());
+		incident.setDepartment(department);
+
+		incidentService.save(incident);
+		
+		return "redirect:/incident";
+	}
+
+	@GetMapping("/incident/{id}")
+	public String editIncident(@PathVariable int id,Model model,ModelMap map) {
+		System.out.println("id is : "+id);
+		
+		List<String> dep = new ArrayList<>();
+		List<Department> departments = departmentService.findAll();
+
+		dep.add("--Select Department--");
+		for (Department department : departments) {
+			dep.add(department.getName());
+		}
 		
 		List<String> priorityList = new ArrayList<>();
 		priorityList.add("--Select Priority--");
@@ -56,61 +135,41 @@ public class IncidentController {
 		priorityList.add("Mediuim");
 		priorityList.add("High");
 		
-		List<String> dep = new ArrayList<>();
-		List<Department> departments = departmentDAO.findAll();
-		
-		dep.add("--Select Department--");
-		for (Department department : departments) {
-			dep.add(department.getName());
-		}
-		
 		List<String> categories = new ArrayList<>();
 		categories.add("--Select Category--");
 		categories.add("DataBase");
 		categories.add("Network");
 		categories.add("System");
+		categories.add("Developement");
 		
-		model.addAttribute("incident", new Incident());
+		if(map.containsAttribute("incident"))
+			model.addAttribute("incident", map);
+		else
+			model.addAttribute("incident", incidentService.findById(id));
+		model.addAttribute("departments", dep);
 		model.addAttribute("priorityList", priorityList);
 		model.addAttribute("categories", categories);
-		model.addAttribute("departments", dep);
 		
-		return "newincident";
-	}
-	
-	@PostMapping(value="/incident"/*,consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE*/)
-	public String newIncidentPost(@ModelAttribute Incident incident,BindingResult bindingResult/*,Incident incident*/){
-		Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
-		
-		User currentUser = userDAO.findByUsername(loggedInUser.getName());
-		Department department = departmentDAO.findByName(incident.getDepartment().getName());
-		
-		incident.setUser(currentUser);
-		incident.setStatus("New");
-		incident.setCreatedDate(new Date());
-		incident.setUpdatedDate(new Date());
-		incident.setDepartment(department);
-		
-		incidentDAO.save(incident);
-		
-		System.out.println(incident);
-		
-		return "redirect:/incident";
-	}
-	
-	@DeleteMapping("/incident/{id}")
-	public String deleteIncident(@PathVariable int id){
 		return "incident";
 	}
-	
-	/*@PutMapping("/incident/{id}")
-	public String updateIncident(@ModelAttribute Incident incident,@PathVariable int id){
-		return "";
+
+	@DeleteMapping("/incident/{id}")
+	public String deleteIncident(@PathVariable int id) {
+		incidentService.removeIncident(id);
+		return "redirect:/myincidents";
 	}
-	
-	@PostMapping("/incident/{id}")
-	public String resolveIncident(@PathVariable int id){
-		return "";
-	}*/
-	
+
+	@PostMapping("/incident/incident/{id}")
+	public String updateIncident(@ModelAttribute Incident incident, @PathVariable int id,RedirectAttributes redirectAttributes) {
+		incident.setDepartment(departmentService.findByName(incident.getDepartment().getName()));
+		incident.setUpdatedDate(new Date());
+		
+		Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
+		User currentUser = userService.findByUsername(loggedInUser.getName());
+		incident.setUser(currentUser);
+		Incident SavedIncident = incidentService.save(incident);
+		
+		redirectAttributes.addAttribute("incident", SavedIncident);
+		return "redirect:/incident/"+id;
+	}
 }

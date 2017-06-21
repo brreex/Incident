@@ -2,6 +2,7 @@ package mum.edu.model;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -9,8 +10,9 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 public class Incident {
@@ -24,13 +26,15 @@ public class Incident {
 	private String category;
 	private String possibleCause;
 	private String suggestion;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@Temporal(TemporalType.DATE)
 	private Date createdDate;
 	@Temporal(TemporalType.DATE)
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date updatedDate;
 	@ManyToOne
 	private User user;
-	@ManyToOne
+	@ManyToOne(cascade=CascadeType.ALL)
 	private Department department;
 
 	public Incident() {

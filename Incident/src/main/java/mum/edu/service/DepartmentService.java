@@ -2,6 +2,7 @@ package mum.edu.service;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import mum.edu.dataaccess.IDepartmentDAO;
@@ -9,7 +10,7 @@ import mum.edu.model.Department;
 
 @Service
 public class DepartmentService implements IDepartmentService{
-	
+	@Autowired
 	IDepartmentDAO departmentDAO;
 	
 	@Override
