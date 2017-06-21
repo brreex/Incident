@@ -12,14 +12,12 @@ import mum.edu.model.User;
 
 @Service
 public class UserService implements IUserService {
-	
 	@Autowired
 	private IUserDAO userDAO;
 	@Autowired
 	private IDepartmentDAO departmentDAO;
 	@Autowired
 	private IRoleDAO roleDAO;
-	
 	@Override
 	public User saveUser(User user) {
 		departmentDAO.save(user.getDepartment());
@@ -28,29 +26,20 @@ public class UserService implements IUserService {
 		}
 		return userDAO.save(user);
 	}
-
 	@Override
 	public List<User> getAllUsers() {
 		return userDAO.findAll();
 	}
-
-	@Override
-	public User findByEmail(String email) {
-		return userDAO.findByEmail(email);
-	}
-
 	@Override
 	public User findById(int id) {
 		return userDAO.findOne(id);
 	}
-
 	@Override
 	public void removeUser(User user) {
 		userDAO.delete(user.getId());
 	}
-
 	@Override
-	public User getByFirstName(String firstName) {
-		return userDAO.getByFirstname(firstName);
+	public User findByUsername(String username) {
+		return userDAO.findByUsername(username);
 	}
 }

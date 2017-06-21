@@ -7,5 +7,5 @@ import mum.edu.model.Role;
 
 @Repository
 public interface IRoleDAO extends JpaRepository<Role, Integer>{
-
+	
 }

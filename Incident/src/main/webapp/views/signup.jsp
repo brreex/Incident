@@ -14,9 +14,9 @@
 </head>
 <body>
 	<div class="container">
-		<form:form modelAttribute="user" method="post" action="signup">
+		<form:form modelAttribute="employee" method="post" action="signup">
 			<form:errors path="*" element="div"></form:errors>
-			
+
 			<div class="form-group">
 				<label for=firstName>First Name</label>
 				<form:input type="text" class="form-control" id="firstName"
@@ -36,10 +36,9 @@
 			</div>
 
 			<div class="form-group">
-				<label for="department">Department</label>
-				<form:input type="text" class="form-control" id="department"
-					placeholder="Enter department" name="department"
-					path="department" />
+				<label for="department">Departments</label>
+				<form:select path="department.name" class="form-control"
+					items="${departments}" />
 			</div>
 
 			<div class="form-group">
@@ -55,18 +54,18 @@
 			</div>
 
 			<div class="form-group">
+				<label for="username">User Name</label>
+				<form:input type="text" class="form-control" id="username"
+					placeholder="Enter username" name="username" path="" />
+			</div>
+
+			<div class="form-group">
 				<label for="password">Password</label>
 				<form:input type="password" class="form-control" id="password"
 					placeholder="Enter password" name="password" path="" />
 			</div>
 
-			<div class="form-group">
-				<label for="password1">Confirm Passord</label>
-				<form:input type="password" class="form-control"
-					id="confirmPassword" placeholder="Confirm Password"
-					name="confirmPassword" path="confirmPassword" />
-			</div>
-			<form:checkboxes items="${roleList}" path="roles" itemLabel="role" />
+			<%-- <form:checkboxes items="${roles}" path="roles" itemLabel="role" /> --%>
 			<br>
 			<%-- <c:forEach items="${roleList}" var="role" varStatus="status">
 				<tr>

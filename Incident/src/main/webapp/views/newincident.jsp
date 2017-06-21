@@ -4,7 +4,7 @@
 <%@ taglib prefix="sec"
 	uri="http://www.springframework.org/security/tags"%>
 <jsp:include page="/navigation" />
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
@@ -23,14 +23,30 @@
 			</div>
 			<div class="form-group">
 				<label for="priority">Priority</label>
-				<form:input type="text" class="form-control" id="priority"
-					placeholder="Enter priority" name="priority" path="priority" />
+				<form:select path="priority" class="form-control"
+					items="${priorityList}" />
 			</div>
+
 			<div class="form-group">
 				<label for="category">Category</label>
-				<form:input type="text" class="form-control" id="category"
-					placeholder="Enter category" name="category" path="category" />
+				<form:select path="category" class="form-control"
+					items="${categories}" />
 			</div>
+
+			<%-- <div class="form-group">
+			<label for="category">Departments</label>
+				<select class="form-control" name="depart" >
+					<c:forEach items="${ departments }" var="department">
+						<option value="${ department }" selected="${ department }">${ department }</option>
+					</c:forEach>
+				</select>
+			</div> --%>
+			
+			<div class="form-group">
+				<label for="department">Departments</label>
+				<form:select path="department.name" class="form-control" items="${departments}"/>
+			</div>
+
 			<div class="form-group">
 				<label for="possibleCause">Possible Cause</label>
 				<form:input type="text" class="form-control" id="possibleCause"

@@ -10,7 +10,7 @@ import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 
 @Entity
-public class Departmet {
+public class Department {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
@@ -22,20 +22,20 @@ public class Departmet {
 	private String parentConstCenter;
 	
 	@OneToMany(mappedBy="department")
-	private List<User> users;
+	private List<Employee> employees;
 	
 	@OneToMany
 	private List<Incident> incidents;
 
+	 
+	public Department(){}
 	
-	public Departmet(){}
-	
-	public Departmet(String name, String costCenter, String parentConstCenter) {
+	public Department(String name, String costCenter, String parentConstCenter) {
 		this.name = name;
 		this.costCenter = costCenter;
 		this.parentConstCenter = parentConstCenter;
 	}
-
+ 
 	public int getId() {
 		return id;
 	}
@@ -68,12 +68,12 @@ public class Departmet {
 		this.parentConstCenter = parentConstCenter;
 	}
 
-	public List<User> getUsers() {
-		return users;
+	public List<Employee> getEmployees() {
+		return employees;
 	}
 
-	public void setUsers(List<User> users) {
-		this.users = users;
+	public void setEmployees(List<Employee> employees) {
+		this.employees = employees;
 	}
 
 	public List<Incident> getIncidents() {
@@ -83,4 +83,11 @@ public class Departmet {
 	public void setIncidents(List<Incident> incidents) {
 		this.incidents = incidents;
 	}
+
+	@Override
+	public String toString() {
+		return "Departmet [id=" + id + ", name=" + name + ", costCenter=" + costCenter + ", parentConstCenter="
+				+ parentConstCenter + ", employees=" + employees + ", incidents=" + incidents + "]";
+	}
+	
 }

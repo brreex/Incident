@@ -1,30 +1,35 @@
 package mum.edu.model;
 
-import java.util.List;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 
 @Entity
 public class Role {
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	@NotNull
 	private String role;
-	@ManyToMany(mappedBy="roles")
-	private List<User> users;
-	
-	public Role(){
-		
+	@ManyToOne
+	private User user;
+
+	public Role() {
 	}
-	
+
 	public Role(String role) {
 		this.role = role;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 	public int getId() {
@@ -43,12 +48,8 @@ public class Role {
 		this.role = role;
 	}
 
-	public List<User> getUsers() {
-		return users;
+	@Override
+	public String toString() {
+		return "Role [id=" + id + ", role=" + role + ", user=" + user + "]";
 	}
-
-	public void setUsers(List<User> users) {
-		this.users = users;
-	}
-
 }

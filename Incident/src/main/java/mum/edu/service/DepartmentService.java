@@ -1,12 +1,30 @@
 package mum.edu.service;
 
-import javax.transaction.Transactional;
-import javax.transaction.Transactional.TxType;
+import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import mum.edu.dataaccess.IDepartmentDAO;
+import mum.edu.model.Department;
+
 @Service
-@Transactional(value=TxType.REQUIRES_NEW)
 public class DepartmentService implements IDepartmentService{
+	
+	IDepartmentDAO departmentDAO;
+	
+	@Override
+	public Department saveDepartment(Department department) {
+		return departmentDAO.save(department);
+	}
+
+	@Override
+	public List<Department> findAll() {
+		return departmentDAO.findAll();
+	}
+
+	@Override
+	public Department findByName(String name) {
+		return departmentDAO.findByName(name);
+	}
 	
 }

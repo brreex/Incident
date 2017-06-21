@@ -40,17 +40,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
     }
 
-    @Autowired
+  /*  @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth
             .inMemoryAuthentication()
                 .withUser("user").password("pass").roles("ADMIN");
-    }
-    
-  /*  @Autowired
-    public void configAuthentication(AuthenticationManagerBuilder auth) throws Exception {
-        auth.jdbcAuthentication().dataSource(dataSource)
-                .usersByUsernameQuery("select email as username ,password, enabled from user where username=?")
-                .authoritiesByUsernameQuery("select u.email as username, r.role from user u join role r join user_roles ur where u.id = ur.users_id and r.id = ur.roles_id and  u.username =?");
     }*/
+    
+    @Autowired
+    public void configAuthentication(AuthenticationManagerBuilder auth) throws Exception {
+        auth.jdbcAuthentication().dataSource(dataSource) 
+                .usersByUsernameQuery("select username,password, enabled from user where username=?")
+                .authoritiesByUsernameQuery("select username,u.id,r.role from user u join role r where u.id=r.user_id and  u.username =?");
+    }
 }

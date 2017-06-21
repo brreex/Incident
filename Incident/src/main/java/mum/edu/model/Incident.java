@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
 @Entity
@@ -27,14 +28,14 @@ public class Incident {
 	private Date createdDate;
 	@Temporal(TemporalType.DATE)
 	private Date updatedDate;
-
 	@ManyToOne
 	private User user;
 	@ManyToOne
-	private Departmet departmet;
+	private Department department;
 
 	public Incident() {
 	}
+
 
 	public Incident(String description, String priority, String status, String category, String possibleCause,
 			String suggestion, Date createdDate, Date updatedDate) {
@@ -91,6 +92,13 @@ public class Incident {
 	public String getPossibleCause() {
 		return possibleCause;
 	}
+	public Department getDepartment() {
+		return department;
+	}
+
+	public void setDepartment(Department department) {
+		this.department = department;
+	}
 
 	public void setPossibleCause(String possibleCause) {
 		this.possibleCause = possibleCause;
@@ -128,12 +136,12 @@ public class Incident {
 		this.user = user;
 	}
 
-	public Departmet getDepartmet() {
-		return departmet;
-	}
-
-	public void setDepartmet(Departmet departmet) {
-		this.departmet = departmet;
+	@Override
+	public String toString() {
+		return "Incident [id=" + id + ", description=" + description + ", priority=" + priority + ", status=" + status
+				+ ", category=" + category + ", possibleCause=" + possibleCause + ", suggestion=" + suggestion
+				+ ", createdDate=" + createdDate + ", updatedDate=" + updatedDate + ", user=" + user + ", departmet="
+				+ department + "]";
 	}
 
 }
