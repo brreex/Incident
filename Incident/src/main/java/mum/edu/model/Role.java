@@ -15,15 +15,17 @@ public class Role {
 	private int id;
 	@NotNull
 	private String role;
+	@NotNull
+	String username;
 	@ManyToOne
-	@JoinColumn(name="username")
 	private User user;
 
 	public Role() {
 	}
 
-	public Role(String role) {
+	public Role(String role,String username) {
 		this.role = role;
+		this.username=username;
 	}
 
 	public User getUser() {

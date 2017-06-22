@@ -41,7 +41,6 @@ public class UserController {
 	}
 	@GetMapping("/signup")
 	public String signupGet(@ModelAttribute("employee") Employee employee,Model model){
-		List<Role> roles = roleService.findAll();
 		List<String> dep = new ArrayList<>();
 		List<Department> departments = departmentService.findAll();
 		
@@ -50,7 +49,6 @@ public class UserController {
 			dep.add(department.getName());
 		}
 		model.addAttribute("departments", dep);
-		model.addAttribute("roles",roles);
 		
 		return "signup";
 	}
@@ -77,7 +75,7 @@ public class UserController {
 		System.out.println(user.getPassword());
 		System.out.println(user.getEnabled());
 		List<Role> roles = new ArrayList<>();
-		roles.add(new Role("USER"));
+		roles.add(new Role("USER",user.getUsername()));
 		
 		user.setRoles(roles);
 		user.setDepartment(department);

@@ -51,6 +51,8 @@
 						<li><a href="/login">Login</a></li>
 					</sec:authorize>
 					<sec:authorize access="hasAuthority('USER')">
+					<sec:authentication var="principal" property="principal" />
+						<li><a style="background-color: aqua; color: blue;">Welcome ${principal.username}</a></li>
 						<li><a href="/logout">Logout</a></li>
 					</sec:authorize>
 				</ul>

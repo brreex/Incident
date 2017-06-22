@@ -34,45 +34,32 @@
 				<form:input type="text" class="form-control" id="position"
 					placeholder="Enter position" name="position" path="position" />
 			</div>
-
 			<div class="form-group">
 				<label for="department">Departments</label>
 				<form:select path="department.name" class="form-control"
 					items="${departments}" />
 			</div>
-
 			<div class="form-group">
 				<label for="phone">Phone</label>
 				<form:input type="text" class="form-control" id="phone"
 					placeholder="Enter phone" name="phone" path="phone" />
 			</div>
-
 			<div class="form-group">
 				<label for="email">Email</label>
 				<form:input type="email" class="form-control" id="email"
 					placeholder="Enter email" name="email" path="email" />
 			</div>
-
 			<div class="form-group">
 				<label for="username">User Name</label>
 				<form:input type="text" class="form-control" id="username"
 					placeholder="Enter username" name="username" path="" />
 			</div>
-
 			<div class="form-group">
 				<label for="password">Password</label>
 				<form:input type="password" class="form-control" id="password"
 					placeholder="Enter password" name="password" path="" />
 			</div>
-
-			<%-- <form:checkboxes items="${roles}" path="roles" itemLabel="role" /> --%>
 			<br>
-			<%-- <c:forEach items="${roleList}" var="role" varStatus="status">
-				<tr>
-					<td><form:checkbox path="roles" value="${role}"
-							label="${role.role}" class="checkbox-inline" /></td>
-				</tr>
-			</c:forEach> --%>
 			<button type="submit" class="btn btn-default">Register</button>
 		</form:form>
 	</div>

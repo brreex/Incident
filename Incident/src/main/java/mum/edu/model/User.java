@@ -20,7 +20,7 @@ public class User extends Employee {
 	@NotNull
 	private Boolean enabled;
 	
-	@OneToMany(mappedBy="user",cascade=CascadeType.ALL)
+	@OneToMany(mappedBy="user")
 	private List<Role> roles;
 
 	public User() {

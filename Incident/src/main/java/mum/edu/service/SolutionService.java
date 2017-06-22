@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import mum.edu.dataaccess.ISolutionDAO;
+import mum.edu.model.Incident;
 import mum.edu.model.Solution;
 
 @Service
@@ -15,5 +16,10 @@ public class SolutionService implements ISolutionService {
 	@Override
 	public Solution saveSolution(Solution solution) {
 		return solutionDAO.save(solution);
+	}
+
+	@Override
+	public Solution findByIncident(Incident incident) {
+		return solutionDAO.findByincident(incident);
 	}
 }

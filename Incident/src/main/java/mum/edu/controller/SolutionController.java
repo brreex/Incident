@@ -39,20 +39,35 @@ public class SolutionController {
 		return "solution";
 	}
 	
+	@GetMapping("/solution/solution/{id}")
+	public String getIncidentSolution(@PathVariable int id,Model model){
+		Incident incident = incidentService.findById(id);
+		Solution solution = solutionService.findByIncident(incident);
+		System.out.println("solution"+solution);
+		System.out.println("incident "+incident);
+		model.addAttribute("solution", solution);
+		model.addAttribute("incident", incident);
+		return "incidentsolution";
+	}
+	
 	@PostMapping("/solution/{id}")
 	public String resolvePost(@ModelAttribute Solution solution,HttpSession session){
 		Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
 		User currentUser = userService.findByUsername(loggedInUser.getName());
 		Incident incident = incidentService.findById((int) session.getAttribute("id"));
 		
-		solution.setUser(currentUser);
-		solution.setCreatedDate(new Date());
-		solution.setUpdatedDate(new Date());
-		solution.setIncident(incident);
+		System.out.println("incident "+incident);
+		
+		Solution newSolution = new Solution(solution.getDescription(), new Date(), new Date());
+		
+		newSolution.setUser(currentUser);
+		newSolution.setCreatedDate(new Date());
+		newSolution.setUpdatedDate(new Date());
+		newSolution.setIncident(incident);
 		
 		incident.setStatus("Solved");
 		
-		Solution savedSolution = solutionService.saveSolution(solution);
+		Solution savedSolution = solutionService.saveSolution(newSolution);
 		
 		System.out.println("id is : "+session.getAttribute("id"));
 		System.out.println("soultion  "+savedSolution);

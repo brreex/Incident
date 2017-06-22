@@ -23,7 +23,7 @@ public class Solution {
 	@Temporal(TemporalType.DATE)
 	private Date updatedDate;
 	
-	@ManyToOne(cascade=CascadeType.ALL)
+	@ManyToOne(cascade=CascadeType.PERSIST)
 	private Incident incident;
 	@ManyToOne
 	private User user;

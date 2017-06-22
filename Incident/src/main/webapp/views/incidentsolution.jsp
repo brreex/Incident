@@ -3,7 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <jsp:include page="/navigation"></jsp:include>
-<!DOCTYPE html >
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
@@ -21,9 +21,9 @@
 					<th>Category</th>
 					<th>Possible Cause</th>
 					<th>Suggestion</th>
-					<th>Created Date</th>
 					
-					<th>Created By</th>
+					<th>Solved By</th>
+					<th>Solution Given</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -35,23 +35,8 @@
 					<td>${incident.category}</td>
 					<td>${incident.possibleCause}</td>
 					<td>${incident.suggestion}</td>
-					<td>${ incident.createdDate}</td>
-					<td>${ incident.user.username}</td>
-					<td>
-					<form:form action='/incident/${incident.id}' method="delete"> 
-						<input type="submit" value="Delete" onclick="return confirm('Are you sure you want to continue')"/>
-					</form:form>
-					</td>
-					<td>
-					<form:form action='/incident/${incident.id}' method="get">
-						<input type="submit" value="Edit"/>
-					</form:form>
-					</td>
-					<td>
-					<form:form action='/solution/solution/${incident.id}' method="get">
-						<input type="submit" value="Solution"/>
-					</form:form>
-					</td>
+					<td>${ solution.user.firstname }</td>
+					<td>${ solution.description }</td>
 				</tr>
 			</c:forEach>
 			</tbody>
