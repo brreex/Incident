@@ -8,5 +8,5 @@ import mum.edu.model.Solution;
 
 @Repository
 public interface ISolutionDAO extends JpaRepository<Solution, Integer>{
-	public Solution findByincident(Incident incident);
+	public Solution findByincidentId(int id);
 }

@@ -1,5 +1,7 @@
 package mum.edu.controller;
 
+import static org.assertj.core.api.Assertions.in;
+
 import java.util.Date;
 
 import javax.servlet.http.HttpSession;
@@ -9,11 +11,13 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import mum.edu.model.Incident;
 import mum.edu.model.Solution;
@@ -39,15 +43,24 @@ public class SolutionController {
 		return "solution";
 	}
 	
-	@GetMapping("/solution/solution/{id}")
-	public String getIncidentSolution(@PathVariable int id,Model model){
-		Incident incident = incidentService.findById(id);
-		Solution solution = solutionService.findByIncident(incident);
-		System.out.println("solution"+solution);
-		System.out.println("incident "+incident);
-		model.addAttribute("solution", solution);
+	@GetMapping("incidentsolution")
+	public String incidentsolution(ModelMap modelMap ,Model model){
+		Incident incident = (Incident) modelMap.get("incident");
+		Solution solution = (Solution) modelMap.get("solution");
+		
 		model.addAttribute("incident", incident);
+		model.addAttribute("solution", solution);
+
 		return "incidentsolution";
+	}
+	
+	@GetMapping("/solution/solution/{id}")
+	public String getIncidentSolution(@PathVariable int id,RedirectAttributes redirectAttributes){
+		Incident incident = incidentService.findById(id);
+		Solution solution = solutionService.findByIncidentId(id);
+		redirectAttributes.addAttribute("solution", solution);
+		redirectAttributes.addAttribute("incident", incident);
+		return "redirect:/incidentsolution";
 	}
 	
 	@PostMapping("/solution/{id}")
