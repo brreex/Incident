@@ -13,6 +13,7 @@ public interface IIncidentService {
 	List<Incident> getUserIncidnets(User user);
 	public Incident findById(int id);
 	public void removeIncident(int id);
+	public List<Incident> findByDescriptionLike(String description);
 	public Incident updateIncident(Incident incident);
 	public Incident findByStatus(String status);
 	public Incident findByPriority(String priority);

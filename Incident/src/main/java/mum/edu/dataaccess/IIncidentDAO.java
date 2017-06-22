@@ -24,4 +24,6 @@ public interface IIncidentDAO extends JpaRepository<Incident, Integer> {
 	List<Incident> findByUser(User user);
 	
 	List<Incident> findByDepartment(Department department);
+
+	List<Incident> findByDescriptionLike(String description);
 }

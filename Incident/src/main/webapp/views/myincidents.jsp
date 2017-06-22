@@ -40,7 +40,7 @@
 					<td>${ incident.user.username}</td>
 					<td>
 					<form:form action='/incident/${incident.id}' method="delete"> 
-						<input type="submit" value="Delete"/>
+						<input type="submit" value="Delete" onclick="return confirm('Are you sure you want to continue')"/>
 					</form:form>
 					</td>
 					<td>

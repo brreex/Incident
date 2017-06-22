@@ -79,4 +79,10 @@ public class IncidentService implements IIncidentService {
 	public List<Incident> findByDepartment(Department department) {
 		return incidentDAO.findByDepartment(department);
 	}
+
+	@Override
+	public List<Incident> findByDescriptionLike(String description) {
+		System.out.println(description);
+		return incidentDAO.findByDescriptionLike(description);
+	}
 }

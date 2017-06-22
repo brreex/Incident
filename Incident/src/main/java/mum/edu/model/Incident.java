@@ -3,18 +3,26 @@ package mum.edu.model;
 import java.util.Date;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.PreRemove;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.annotations.ResultCheckStyle;
+import org.hibernate.annotations.SQLDelete;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
+@SQLDelete(sql = "UPDATE incident SET state = 'DELETED' WHERE id = ?", check = ResultCheckStyle.COUNT)
+/*@Where(clause = "state <> 'DELETED' OR state=NULL")*/
 public class Incident {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,12 +42,20 @@ public class Incident {
 	private Date updatedDate;
 	@ManyToOne
 	private User user;
-	@ManyToOne(cascade=CascadeType.ALL)
+	@ManyToOne(cascade = CascadeType.ALL)
 	private Department department;
+
+	@Column
+	@Enumerated(EnumType.STRING)
+	private IncidentState state;
 
 	public Incident() {
 	}
 
+	@PreRemove
+	public void deleteUser() {
+		this.state = IncidentState.DELETED;
+	}
 
 	public Incident(String description, String priority, String status, String category, String possibleCause,
 			String suggestion, Date createdDate, Date updatedDate) {
@@ -96,6 +112,7 @@ public class Incident {
 	public String getPossibleCause() {
 		return possibleCause;
 	}
+
 	public Department getDepartment() {
 		return department;
 	}

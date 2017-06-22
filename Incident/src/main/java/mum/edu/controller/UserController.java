@@ -63,7 +63,7 @@ public class UserController {
 		Department department = departmentService.findByName(employee.getDepartment().getName());
 		employee.setDepartment(department);
 		Employee savedEmployee = employeeService.saveEmployee(employee);
-		
+		 
 		String username = savedEmployee.getUsername();
 		String password = savedEmployee.getPassword();
 		

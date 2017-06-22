@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import mum.edu.model.Department;
 import mum.edu.model.Incident;
@@ -38,14 +39,7 @@ public class IncidentController {
 	public String allIncidnets(Model model) {
 		Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
 		User currentUser = userService.findByUsername(loggedInUser.getName());
-
 		List<Incident> incidents = incidentService.findByDepartment(currentUser.getDepartment());
-		System.out.println("count:" + incidents.size());
-
-		for (Incident incident : incidents) {
-			System.out.println(incident);
-		}
-
 		model.addAttribute("incidents", incidents);
 
 		return "incidents";
@@ -55,14 +49,8 @@ public class IncidentController {
 	public String myIncidents(Model model) {
 		Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
 		User currentUser = userService.findByUsername(loggedInUser.getName());
-
 		List<Incident> incidents = incidentService.getUserIncidnets(currentUser);
-		System.out.println("count:" + incidents.size());
-
-		for (Incident incident : incidents) {
-			System.out.println(incident);
-		}
-
+		
 		model.addAttribute("incidents", incidents);
 		return "myincidents";
 	}
@@ -119,7 +107,6 @@ public class IncidentController {
 
 	@GetMapping("/incident/{id}")
 	public String editIncident(@PathVariable int id,Model model,ModelMap map) {
-		System.out.println("id is : "+id);
 		
 		List<String> dep = new ArrayList<>();
 		List<Department> departments = departmentService.findAll();
@@ -155,7 +142,7 @@ public class IncidentController {
 
 	@DeleteMapping("/incident/{id}")
 	public String deleteIncident(@PathVariable int id) {
-		incidentService.removeIncident(id);
+		//incidentService.removeIncident(id);
 		return "redirect:/myincidents";
 	}
 
@@ -167,9 +154,15 @@ public class IncidentController {
 		Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
 		User currentUser = userService.findByUsername(loggedInUser.getName());
 		incident.setUser(currentUser);
+		incident.setStatus("In-Progress");
 		Incident SavedIncident = incidentService.save(incident);
 		
 		redirectAttributes.addAttribute("incident", SavedIncident);
 		return "redirect:/incident/"+id;
+	}
+	@GetMapping(value="/search",params={"searchText"})
+	public String search (@RequestParam String searchText){
+		System.out.println(searchText);
+		return "search";
 	}
 }

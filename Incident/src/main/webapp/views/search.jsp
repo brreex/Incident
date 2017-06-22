@@ -8,20 +8,9 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Insert title here</title>
+<title>Search</title>
 </head>
 <body>
-		<div class="container">
-		<form:form modelAttribute="solution" method="post" action='/solution/1'>
-			<form:errors path="*" element="div"></form:errors>
-			<div class="form-group">
-				<label for=description>Description</label>
-				<form:input type="text" class="form-control" id="description"
-					placeholder="Enter description" name="description"
-					path="description" />
-			</div>
-			<button type="submit" class="btn btn-default">Save</button>
-		</form:form>
-	</div>
+
 </body>
 </html>

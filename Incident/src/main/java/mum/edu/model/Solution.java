@@ -1,6 +1,8 @@
 package mum.edu.model;
 
 import java.util.Date;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -21,7 +23,7 @@ public class Solution {
 	@Temporal(TemporalType.DATE)
 	private Date updatedDate;
 	
-	@ManyToOne
+	@ManyToOne(cascade=CascadeType.ALL)
 	private Incident incident;
 	@ManyToOne
 	private User user;
@@ -72,5 +74,19 @@ public class Solution {
 
 	public void setIncident(Incident incident) {
 		this.incident = incident;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	@Override
+	public String toString() {
+		return "Solution [id=" + id + ", description=" + description + ", createdDate=" + createdDate + ", updatedDate="
+				+ updatedDate + ", incident=" + incident + ", user=" + user + "]";
 	}
 }

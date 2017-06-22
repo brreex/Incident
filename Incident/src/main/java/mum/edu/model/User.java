@@ -3,6 +3,7 @@ package mum.edu.model;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
@@ -12,6 +13,7 @@ import javax.validation.constraints.NotNull;
 @PrimaryKeyJoinColumn(name = "id", referencedColumnName = "id")
 public class User extends Employee {
 	@NotNull
+	@Column(name="username")
 	private String username;
 	@NotNull
 	private String password;

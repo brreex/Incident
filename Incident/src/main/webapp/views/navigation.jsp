@@ -1,5 +1,8 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="sec"
+	uri="http://www.springframework.org/security/tags"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -24,29 +27,34 @@
 			<div id="navbar" class="collapse navbar-collapse">
 				<ul class="nav navbar-nav">
 					<li><a href="/">Home</a></li>
-					<%-- <sec:authorize access="hasRole('ROLE_ADMIN')"> --%>
-					<li><a href="/myincidents">My Incidents</a></li>
-					<li><a href="/incidents">Incidents</a></li>
-					<li><a href="/incident">New Incident</a></li>
-					<%-- </sec:authorize> --%>
+					<sec:authorize access="hasAuthority('USER')">
+						<li><a href="/myincidents">My Incidents</a></li>
+						<li><a href="/incidents">Team Incidents</a></li>
+						<li><a href="/incident">New Incident</a></li>
+						<li>
+							<form class="form-inline mt-2 mt-md-0" action="search"
+								method="get">
+								<input class="form-control mr-sm-2" type="text"
+									name="searchText" id="searchText" placeholder="Search">
+								<button class="btn btn-outline-success my-2 my-sm-0"
+									type="submit">Search</button>
+							</form>
+						</li> 
+					</sec:authorize>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
-					<%-- <sec:authorize access="hasRole('ROLE_USER')"> --%>
-					<li><a href="/profile">Profile</a></li>
-					<%-- </sec:authorize> --%>
-					<%-- <sec:authorize access="hasRole('ADMIN')"> --%>
-					<li><a href="/users">Users</a></li>
-					<li><a href="/signup">Register</a></li>
-					<%-- </sec:authorize> --%>
-					<%-- <sec:authorize access="!hasRole('USER')"> --%>
-					<li><a href="/login">Login</a></li>
-					<%-- </sec:authorize> --%>
-					<%-- <sec:authorize access="hasRole('ROLE_USER')"> --%>
-					<li><a href="/logout">Logout</a></li>
-					<%-- </sec:authorize> --%>
+					<sec:authorize access="hasAuthority('ADMIN')">
+						<li><a href="/users">Users</a></li>
+						<li><a href="/signup">Register</a></li>
+					</sec:authorize>
+					<sec:authorize access="!hasAuthority('USER')">
+						<li><a href="/login">Login</a></li>
+					</sec:authorize>
+					<sec:authorize access="hasAuthority('USER')">
+						<li><a href="/logout">Logout</a></li>
+					</sec:authorize>
 				</ul>
 			</div>
-			<!--/.nav-collapse -->
 		</div>
 	</nav>
 	<script
